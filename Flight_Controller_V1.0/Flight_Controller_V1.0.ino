@@ -1,3 +1,10 @@
+#include <Adafruit_Sensor.h>
+#include <Adafruit_GPS.h>
+#include <math.h> 
+#include <Wire.h>   
+#include <Servo.h>
+#include <SoftwareSerial.h>
+
 void setup() {
   // put your setup code here, to run once:
 
