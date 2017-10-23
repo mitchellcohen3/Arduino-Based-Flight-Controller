@@ -1,3 +1,5 @@
+#include <Adafruit_BNO055.h>
+#include <utility/imumaths.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_GPS.h>
 #include <math.h> 
