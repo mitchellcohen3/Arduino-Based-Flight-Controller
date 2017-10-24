@@ -7,12 +7,24 @@
 #include <Servo.h>
 #include <SoftwareSerial.h>
 
+/*Define all necessary sensors*/
+
+#define BNO055_SAMPLERATE_DELAY_MS (100)
+Adafruit_BNO055 bno = Adafruit_BNO055();
+
+/*Define Servo pins*/
+
+const int SERVO_PIN_ELEVATOR = 9;
+const int SERVO_PIN_AILERONS = 10;
+const int SERVO_PIN_RUDDER = 11;
+
 void setup() {
-  // put your setup code here, to run once:
+  initialize_all_sensors();
 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  
+  control();
 
 }

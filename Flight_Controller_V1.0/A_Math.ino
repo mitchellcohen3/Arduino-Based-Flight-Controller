@@ -2,7 +2,7 @@ imu::Quaternion euler_to_quat(double pitch, double roll, double yaw){
   
   /*Converts a given Euler rotation to a quaternion*/
 
-  // Abbreviations for the various angular functions
+  //Abbreviations for the various angular functions
   double cy = cos(yaw * 0.5);
   double sy = sin(yaw * 0.5);
   double cr = cos(roll * 0.5);
