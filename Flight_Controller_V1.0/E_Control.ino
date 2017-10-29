@@ -1,22 +1,13 @@
 /* Declare global variables*/
 
-const int DESIRED_PITCH = 0;
-double desired_roll;
-double desired_yaw;
+float desired_roll;
+float desired_yaw;
 
-double integral_error_past = 0;
+float integral_error_past = 0;
 
-double x_error; //Error in rotation about x
-double y_error; //Error in rotation about y
-double z_error; //Error in rotation about z
-
-const int MAX_SERVO_LIMIT_X = 50;
-const int MAX_SERVO_LIMIT_Y = 50;
-const int MAX_SERVO_LIMIT_Z = 50;
-
-const int MAX_ROLL_ROTATION = 20; //Max desired roll in degrees
-
-/*START OF ATTITUDE CONTROL*/
+float x_error; //Error in rotation about x
+float y_error; //Error in rotation about y
+float z_error; //Error in rotation about z
 
 void control_pitch() { //Function to control the pitch of the UAV
   
@@ -27,15 +18,12 @@ void control_pitch() { //Function to control the pitch of the UAV
 
     /*Declare local variables*/
     
-    double u_p_x, u_d_x, u_i_x, u_total_x; //Proportional, derivative, integral, and total control efforts in x
-    
-    const double KP_X = 1.0; //Proportional gain in x
-    const double KI_X = 0; //Integral gain in x
+    float u_p_x, u_d_x, u_i_x, u_total_x; //Proportional, derivative, integral, and total control efforts in x
     
     int servo_output_x; //Servo rotation in x (in deg)
-    double dt = 0.10; //Timestep for integration
+
     
-    double integral_error = dt*(x_error) + integral_error_past; //Caluclate integral error
+    float integral_error = dt*(x_error) + integral_error_past; //Caluclate integral error
 
     /*Calculate control efforts*/
     
@@ -59,23 +47,22 @@ void control_roll_and_yaw(){
     /* Create and attach rudder and aileron servos to correct pins*/
 
     Servo rudder_servo;
-    Servo aileron_servo;
+    Servo aileron_right_servo;
+    Servo aileron_left_servo;
 
     rudder_servo.attach(SERVO_PIN_RUDDER);
-    aileron_servo.attach(SERVO_PIN_AILERONS);
+    aileron_right_servo.attach(SERVO_PIN_AILERON_LEFT);
+    aileron_left_servo.attach(SERVO_PIN_AILERON_RIGHT);
     
-    double u_p_y; //Proportional control effort in y
-    double u_p_z; //Proportional control effort in z
-
-    const double KP_Y = 1.0; //Proportional gain in y
-    const double KP_Z = 1.0; //Proportional gain in y
+    float u_p_y; //Proportional control effort in y
+    float u_p_z; //Proportional control effort in z
     
     int servo_output_y; //Servo rotation in y (in deg)
     int servo_output_z; //Servo rotation in z (in deg)
 
 }
 
-void control(){
+void attitude_control(){
   
     imu::Quaternion q_ref = euler_to_quat(DESIRED_PITCH, desired_roll, desired_yaw);    //Calculate desired rotation in quaternions
     imu::Quaternion q_error = calculate_error_quat(q_ref, q_actual); //Calculate error quaternion from desired rotation compared to actual rotation
@@ -97,6 +84,26 @@ void control(){
     control_pitch();  
     control_roll_and_yaw();
 
+}
+
+void position_control(){
+
+}
+
+void control(){
+  
+    float gps_previous;
+    float imu_previous;
+    
+    if(millis() - gps_previous > gps_period){
+        position_control();
+        gps_previous = millis();
+    }
+
+    if(millis() - imu_previous > imu_period){
+        attitude_control();
+        imu_previous = millis();
+    }
 }
 
 

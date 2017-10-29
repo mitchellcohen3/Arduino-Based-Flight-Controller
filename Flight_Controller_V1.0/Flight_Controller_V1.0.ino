@@ -12,12 +12,6 @@
 #define BNO055_SAMPLERATE_DELAY_MS (100)
 Adafruit_BNO055 bno = Adafruit_BNO055();
 
-    /*Define Servo pins*/
-
-const int SERVO_PIN_ELEVATOR = 9;
-const int SERVO_PIN_AILERONS = 10;
-const int SERVO_PIN_RUDDER = 11;
-
 void setup() {
     initialize_all_sensors();
 }
