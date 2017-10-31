@@ -1,0 +1,15 @@
+#include <Adafruit_GPS.h>
+#include <math.h>
+
+//this code takes the current heading and gets the angle between it and the set point's coords
+//input the heading as an angle counter-clockwise from directly east
+//sign convention will have counter clockwise as positive (roll left)
+//plane's location is (x,y), set point at (x2, y2) = (dx+x, dy+y)
+double angle(double heading, double x, double y, double x2, double y2){
+    double dx=x-x2;
+    double dy=y-y2;
+    double tht = atan2(dy, dx);
+    double r = heading-tht;
+    return r;
+}
+

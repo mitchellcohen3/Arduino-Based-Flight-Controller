@@ -1,6 +1,10 @@
 void initialize_all_sensors(){
     initialize_imu();
+<<<<<<< HEAD
     initialize_servos();
+=======
+    initialize_GPS();
+>>>>>>> 9d07381362fdb72110c6a0ca92e399c6ed23bcbc
   }
   
 void initialize_imu(){
@@ -27,6 +31,20 @@ void initialize_servos(){
     //aileron_left_servo.attach(SERVO_PIN_AILERON_RIGHT);
 }
 
+
+
+void initialize_GPS(){
+    //SoftwareSerial mySerial(3,2); //if we want to print data to the serial monitor
+    #define GPSECHO  true
+    // 9600 NMEA is the default baud rate for Adafruit MTK GPS's- some use 4800
+    GPS.begin(9600);
+    //turn on RMC (recommended minimum) and GGA (fix data) including altitude
+    GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCONLY); 
+    GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);   // 1 Hz update rate
+    GPS.sendCommand(PGCMD_ANTENNA);       
+    //useInterrupt(false);  //option to have a timer interrupt go off and read data every 1 millisecond
+     
+}
 
     
 
