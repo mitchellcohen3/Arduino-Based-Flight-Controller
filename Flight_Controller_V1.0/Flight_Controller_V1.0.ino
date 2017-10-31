@@ -11,6 +11,8 @@
 
 #define BNO055_SAMPLERATE_DELAY_MS (100)
 Adafruit_BNO055 bno = Adafruit_BNO055();
+Adafruit_GPS GPS();
+#define GPSECHO true;
 
 void setup() {
     initialize_all_sensors();
