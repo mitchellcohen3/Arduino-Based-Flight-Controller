@@ -26,10 +26,23 @@ struct setpt{
 double x0, y0;  //define these as the origin, now have a frame of reference for position
 struct setpt setpoints[3];  //define an array of setpoints to reach, once we have reached the last point, initiate landing
 
+//use the following to get the coords of the set points
+double mtolat(double dy){
+  double p = 3.141592654;
+  double r = 6371000; //earth's radius in meters 
+  return (p/180)*dy/r;
+}
+
+double mtolong(double dx, double lat0){
+  double p = 3.141592654;
+  double r = 6371000; //earth's radius in meters 
+  return (p/180)*(dx/r)/(cos(lat0));
+}
+
 
 void initialize_setpoints(){
-    setpoints[0].x = x0 + 20;
-    setpoints[0].y = y0 + 20;   //placeholder until we come up with an actual coordinate scheme
+    setpoints[0].x = x0 + mtolong(20, y0);
+    setpoints[0].y = y0 + mtolat(20);   //placeholder until we come up with an actual coordinate scheme
    
     
 }    
@@ -38,6 +51,17 @@ void setup() {
     Serial.print("Test");
     initialize_all_sensors();
     delay(10000);
+    //this loop checks to make sure there is a fix, new data is received, and that it is parsed, otherwise it tries again
+    while(1){
+        if (!GPS.fix) continue;
+        char c = GPS.read();
+        if (GPS.newNMEAreceived()) {
+            if (!GPS.parse(GPS.lastNMEA())){
+                continue;
+            }
+            break;
+        }    
+    }        
     x0 = GPS.longitude;
     y0 = GPS.latitude;
     initialize_setpoints();
