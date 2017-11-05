@@ -19,6 +19,20 @@ double distTo(double la1, double lo1, double la2, double lo2){
   return (radius * c);
 }
 
+//use the following to get the coords of the set points
+double mtolat(double dy){
+  double p = 3.141592654;
+  double r = 6371000; //earth's radius in meters 
+  return (p/180)*dy/r;
+}
+
+double mtolong(double dx, double lat0){
+  double p = 3.141592654;
+  double r = 6371000; //earth's radius in meters 
+  return (p/180)*(dx/r)/(cos(lat0));
+}
+
+
 double getdx (double lo1, double lo2){
   return (distTo(0, lo1, 0, lo2));
 }
