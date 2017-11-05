@@ -54,3 +54,14 @@ double angle(double heading, double x, double y, double x2, double y2){
     return r;
 }
 
+
+//take in the x and y coords of the current and previous points to approximate the heading angle
+double getHeading(double x1, double y1, double x2, double y2){
+    double dx=x2-x1;
+    double dy=y2-y1;
+    double tht = atan2(dy, dx);
+    return tht;
+}
+
+
+
