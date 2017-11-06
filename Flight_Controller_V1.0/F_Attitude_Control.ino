@@ -1,6 +1,6 @@
 /* Declare global variables*/
 
-double desired_roll = 15*3.141592653/180;
+double desired_roll;
 
 double x_error; //Error in rotation about x
 double y_error; //Error in rotation about y
@@ -11,6 +11,8 @@ double z_error; //Error in rotation about z
 PIDLoop pitch_PID = PIDLoop(dt, MAX_SERVO_LIMIT_Y, -MAX_SERVO_LIMIT_Y, KP_Y, KD_Y, KI_Y);
 PIDLoop roll_PID = PIDLoop(dt, MAX_SERVO_LIMIT_X, -MAX_SERVO_LIMIT_X, KP_X, KD_X, KI_X);
 PIDLoop yaw_PID = PIDLoop(dt, MAX_SERVO_LIMIT_Z, -MAX_SERVO_LIMIT_Z, KP_Z, KD_Z, KI_Z);
+
+PIDLoop position_PID = PIDLoop(dt, MAX_ROLL_LIMIT, -MAX_ROLL_LIMIT, KP_POSITION, KD_POSITION, KI_POSITION);
 
 void control_pitch() { //Function to control the pitch of the UAV
 

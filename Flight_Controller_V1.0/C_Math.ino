@@ -83,6 +83,28 @@ float PIDLoop::calculate_output(float error){
     return output;
 }
 
+float calculate_gamma(imu::Quaternion q){
+    float x = q.x()*q.y() + q.z()*q.w();
+    float gamma;
+
+      if(x > 0.499){
+          gamma = 2*atan2(q.x(),q.w());
+      }
+      
+      if(x < -0.499){
+          gamma = -2*atan2(q.x(),q.w());
+      }
+      
+      else{
+        float sqx = q.x()*q.x();
+        float sqy = q.y()*q.y();
+        float sqz = q.z()*q.z();
+
+        gamma  = atan2(2*q.y()*q.w() - 2*q.x()*q.z(), 1 - 2*sqy - 2*sqz);
+        return gamma;
+      }
+}
+
 
 
 

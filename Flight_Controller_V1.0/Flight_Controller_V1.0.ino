@@ -11,6 +11,7 @@
 
 #define BNO055_SAMPLERATE_DELAY_MS (100)
 Adafruit_BNO055 bno = Adafruit_BNO055();
+
 Adafruit_GPS GPS();
 #define GPSECHO true;
 
@@ -26,26 +27,13 @@ struct setpt{
 double x0, y0;  //define these as the origin, now have a frame of reference for position
 struct setpt setpoints[3];  //define an array of setpoints to reach, once we have reached the last point, initiate landing
 
-//use the following to get the coords of the set points
-double mtolat(double dy){
-  double p = 3.141592654;
-  double r = 6371000; //earth's radius in meters 
-  return (p/180)*dy/r;
-}
-
-double mtolong(double dx, double lat0){
-  double p = 3.141592654;
-  double r = 6371000; //earth's radius in meters 
-  return (p/180)*(dx/r)/(cos(lat0));
-}
-
 
 void initialize_setpoints(){
     setpoints[0].x = x0 + mtolong(20, y0);
     setpoints[0].y = y0 + mtolat(20);   //placeholder until we come up with an actual coordinate scheme
-   
     
 }    
+
 void setup() {
     Serial.begin(9600);
     Serial.print("Test");

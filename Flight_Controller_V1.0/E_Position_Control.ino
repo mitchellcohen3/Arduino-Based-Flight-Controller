@@ -1,6 +1,3 @@
-#include <Adafruit_GPS.h>
-#include <math.h>
-
 //long is x dir, lat is y dir
 //Get dist from (lo1, la1) to (lo2, la2)
 double distTo(double la1, double lo1, double la2, double lo2){
@@ -62,6 +59,7 @@ double getHeading(double x1, double y1, double x2, double y2){
     double tht = atan2(dy, dx);
     return tht;
 }
+
 
 
 
