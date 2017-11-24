@@ -11,7 +11,9 @@ const int MAX_ROLL_ROTATION = 20; //Max desired roll in degrees
 const float dt = 0.10; //Timestep for integration 
 
 const float gps_period = 1000;
-const float imu_period = 100;
+const float imu_period = 10000;
+
+const float TOL = 4.00; // tolerance for deadband in PID
 
     /*Input gains below*/
 
@@ -19,13 +21,13 @@ const float KP_X = 200; //Proportional gain in x
 const float KD_X = 0; //Derivative gain in x
 const float KI_X = 0; //Integral gain in x
 
-const float KP_Y = 150; //Proportional gain in y
+const float KP_Y = 100; //Proportional gain in y
 const float KD_Y = 0; //Derivative gain in y
 const float KI_Y = 0; //Integral gain in y
 
-const float KP_Z = 1.0; //Proportional gain in z
-const float KD_Z = 0;
-const float KI_Z = 0;
+const float KP_Z = 100; //Proportional gain in z
+const float KD_Z = 0; //Derivative gain in z
+const float KI_Z = 0; //Integral gain in z
 
 
 const float KP_POSITION = 50;

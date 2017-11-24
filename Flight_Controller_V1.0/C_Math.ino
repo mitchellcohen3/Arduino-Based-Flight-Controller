@@ -1,7 +1,8 @@
 imu::Quaternion euler_to_quat(double pitch, double roll, double yaw){ 
   
   /*Converts a given Euler rotation to a quaternion*/
-
+  /*REMEMBER TO CONVERT TO RADIANS*/
+  
   /*Abbreviations for the various angular functions*/
   double cy = cos(yaw * 0.5);
   double sy = sin(yaw * 0.5);
@@ -56,13 +57,16 @@ PIDLoop::PIDLoop(float dt, int maximum, int minimum, float Kp, float Kd, float K
     _integral(0){}
 
 float PIDLoop::calculate_output(float error){
-  
+    float Iout;
+    
     // Proportional term
     float Pout = _Kp * error;
-
+    
     // Integral term
-    _integral += error * _dt;
-    float Iout = _Ki * _integral;
+    if(error < 0.05){
+        _integral += error * _dt;
+        Iout = _Ki * _integral;
+    }
 
     // Derivative term
     float derivative = (error - _pre_error) / _dt;
@@ -72,7 +76,7 @@ float PIDLoop::calculate_output(float error){
     float output = Pout + Iout + Dout;
 
     // Restrict to max/min
-    if( output > _maximum )
+    if(output > _maximum )
         output = _maximum;
     else if( output < _minimum )
         output = _minimum;
@@ -101,8 +105,8 @@ float calculate_gamma(imu::Quaternion q){
         float sqz = q.z()*q.z();
 
         gamma  = atan2(2*q.y()*q.w() - 2*q.x()*q.z(), 1 - 2*sqy - 2*sqz);
-        return gamma;
       }
+      return gamma;
 }
 
 

@@ -12,17 +12,22 @@
 #define BNO055_SAMPLERATE_DELAY_MS (100)
 Adafruit_BNO055 bno = Adafruit_BNO055();
 
-Adafruit_GPS GPS();
+SoftwareSerial mySerial(3, 2);
+Adafruit_GPS GPS(&mySerial);
 #define GPSECHO true;
 
+
+/*Create Servo Objects*/
 Servo elevator_servo;
-Servo aileron_servo;
+Servo aileron_servo_left;
+Servo aileron_servo_right;
+Servo rudder_servo;
 
 struct setpt{
     //define a set point as a structure with x and y coordinates (in meters)
     double x;
     double y;
-}
+};
 
 double x0, y0;  //define these as the origin, now have a frame of reference for position
 struct setpt setpoints[3];  //define an array of setpoints to reach, once we have reached the last point, initiate landing
@@ -36,9 +41,9 @@ void initialize_setpoints(){
 
 void setup() {
     Serial.begin(9600);
-    Serial.print("Test");
     initialize_all_sensors();
-    delay(10000);
+    delay(5000);
+    
     //this loop checks to make sure there is a fix, new data is received, and that it is parsed, otherwise it tries again
     while(1){
         if (!GPS.fix) continue;
@@ -54,7 +59,8 @@ void setup() {
     y0 = GPS.latitude;
     initialize_setpoints();
     //Cut_Down();  insert the procedure to cut down the plane
-    //stabilize();
+    //stabilize();*/
+    
 }
 
 
