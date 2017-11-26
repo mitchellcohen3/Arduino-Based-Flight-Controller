@@ -1,5 +1,7 @@
 //long is x dir, lat is y dir
 //Get dist from (lo1, la1) to (lo2, la2)
+
+
 double distTo(double la1, double lo1, double la2, double lo2){
   double p = 3.141592654;
   double radius = 6371000; //earth's radius in meters 
@@ -29,12 +31,15 @@ double mtolong(double dx, double lat0){
   return (p/180)*(dx/r)/(cos(lat0));
 }
 
-
+//from l1 -> l2
 double getdx (double lo1, double lo2){
+  //distTo returns an abs value, return negative if the l1>l2
+  if (lo1>lo2) return (-1*(distTo(0, lo1, 0, lo2)));
   return (distTo(0, lo1, 0, lo2));
 }
 
 double getdy (double la1, double la2){
+  if (la1>la2) return (-1*return (distTo(la1, 0, la2, 0)));
   return (distTo(la1, 0, la2, 0));
 }
 
@@ -59,9 +64,40 @@ double getHeading(double x1, double y1, double x2, double y2){
     double tht = atan2(dy, dx);
     return tht;
 }
+//return 1 if sp is reached, advance to next point
+//takes in the current position and setpt
+int spReached(struct setpt sp, double lon, double lat){
+  //get the difference in lat/long of the setpt from the origin 
+  //make sure the dla, dlo values correspond w the negatives if any problems arise in debugging
+  double dla = mtolat(sp.y);
+  double la = y0 + dla;
+  double dlo = mtolong(sp.x, la);
+  double lo = x0 + dlo;
+  double dist = distTo(la, lo, lat, lon);
+  if(dist<5.0) return 1;
+  return 0;
+}  
 
 void position_control(){
-
+  nlo = GPS.longitude;
+  nla = GPS.latitude;
+  if (spReached(setpoints[counter], nlo, nla)){
+    counter++;
+  }
+  nx = getdx(x0, nlo);
+  ny = getdy(y0, nla);
+  double head = getHeading(px, py, nx, ny);
+  double t= angle(head, nx, ny, setpoints[counter].x, setpoints[counter].y);
+  if(t>20){
+    desired_roll = MAX_ROLL_LIMIT;
+  }else if(t<-20){
+    desired_roll = (-1*MAX_ROLL_LIMIT);
+  }else{
+    desired_roll = (t/20*MAX_ROLL_LIMIT);
+  }  
+  //these store the previous x/y values
+  px=nx;
+  py=ny;
 }
 
 
