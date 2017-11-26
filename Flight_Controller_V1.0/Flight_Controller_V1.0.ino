@@ -30,6 +30,9 @@ struct setpt{
 };
 
 double x0, y0;  //define these as the origin, now have a frame of reference for position
+double nlo, nla; //current position in long, lat
+double nx, ny;  //current position in cartesian coords
+int counter = 0;   //counts the current setpt
 struct setpt setpoints[3];  //define an array of setpoints to reach, once we have reached the last point, initiate landing
 
 
