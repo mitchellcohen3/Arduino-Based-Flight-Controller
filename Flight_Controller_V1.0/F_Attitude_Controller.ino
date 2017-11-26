@@ -1,7 +1,6 @@
 
 /* Declare global variables*/
 
-double desired_roll = 0;
 
 /*Initialize PID loops for roll, pitch and yaw*/
 
