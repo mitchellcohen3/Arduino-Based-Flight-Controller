@@ -4,7 +4,7 @@
 
 double distTo(double la1, double lo1, double la2, double lo2){
   double p = 3.141592654;
-  double radius = 6371000; //earth's radius in meters 
+  double radius = 6367302 + 40; //earth's radius in meters in montreal, 40 is the height above sea level at mcgill 
   double dlat = (p/180)*(la2-la1);
   double dlong = (p/180)*(lo2-lo1);
   // convert the necessary input coords from degrees to radians;
