@@ -6,6 +6,7 @@
 #include <Wire.h>   
 #include <Servo.h>
 #include <SoftwareSerial.h>
+//#include <TinyGPSPlus.h>
 
 /*Define all necessary sensors*/
 
@@ -15,6 +16,11 @@ Adafruit_BNO055 bno = Adafruit_BNO055();
 SoftwareSerial mySerial(3, 2);
 Adafruit_GPS GPS(&mySerial);
 #define GPSECHO true;
+
+/*
+  TinyGPSPlus gps  
+
+*/
 
 
 /*Create Servo Objects*/
