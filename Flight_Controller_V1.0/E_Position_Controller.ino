@@ -52,7 +52,7 @@ double angle(double heading, double x, double y, double x2, double y2){
     double dx=x-x2;
     double dy=y-y2;
     double tht = atan2(dy, dx);
-    double r = heading-tht;
+    double r = tht-heading; //do  this to ensure counter clockwise is +ve
     return r;
 }
 
