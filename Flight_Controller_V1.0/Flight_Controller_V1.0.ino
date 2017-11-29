@@ -6,7 +6,7 @@
 #include <Wire.h>   
 #include <Servo.h>
 #include <SoftwareSerial.h>
-//#include <TinyGPSPlus.h>
+#include <TinyGPS++.h>
 
 /*Define all necessary sensors*/
 
@@ -17,11 +17,7 @@ SoftwareSerial mySerial(3, 2);
 Adafruit_GPS GPS(&mySerial);
 #define GPSECHO true;
 
-/*
-  TinyGPSPlus gps  
-
-*/
-
+TinyGPSPlus gps;  //Defining GPS for TinyGPS++ Library
 
 /*Create Servo Objects*/
 Servo elevator_servo;
@@ -70,9 +66,11 @@ void setup() {
             }
             break;
         }    
-    }        
-    x0 = GPS.longitude;
-    y0 = GPS.latitude;
+    }
+    x0 = gps.location.lng(); //using TinyGPS++ Library
+    y0 = gps.location.lat(); //using TinyGPS++ Library
+    //x0 = GPS.longitude;
+    //y0 = GPS.latitude;
     initialize_setpoints();
     //Cut_Down();  insert the procedure to cut down the plane
     //stabilize();*/
