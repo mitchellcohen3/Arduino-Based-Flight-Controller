@@ -4,6 +4,8 @@
   These sensors use I2C or SPI to communicate, 2 or 4 pins are required 
   to interface.
 
+  Arduino Library Reference: https://learn.adafruit.com/adafruit-bmp280-barometric-pressure-plus-temperature-sensor-breakout/arduino-test
+
  ***************************************************************************/
 
 #define BMP_SCK 13
