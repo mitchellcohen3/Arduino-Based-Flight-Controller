@@ -67,8 +67,8 @@ void setup() {
             break;
         }    
     }
-    x0 = gps.location.lng(); //using TinyGPS++ Library
-    y0 = gps.location.lat(); //using TinyGPS++ Library
+    x0 = (gps.location.lng()); //using TinyGPS++ Library
+    y0 = (gps.location.lat()); //using TinyGPS++ Library
     //x0 = GPS.longitude;
     //y0 = GPS.latitude;
     initialize_setpoints();
