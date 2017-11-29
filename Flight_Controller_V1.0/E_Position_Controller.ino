@@ -39,7 +39,7 @@ double getdx (double lo1, double lo2){
 }
 
 double getdy (double la1, double la2){
-  if (la1>la2) return (-1*return (distTo(la1, 0, la2, 0)));
+  if (la1>la2) return (-1*(distTo(la1, 0, la2, 0)));
   return (distTo(la1, 0, la2, 0));
 }
 
