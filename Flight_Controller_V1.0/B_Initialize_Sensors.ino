@@ -2,6 +2,7 @@ void initialize_all_sensors(){
     initialize_imu();
     initialize_servos();
     initialize_GPS();
+    initialize_pres();
   }
   
 void initialize_imu(){
@@ -46,7 +47,16 @@ void initialize_GPS(){
        
 }
 
-    
+void initialize_pres(){
+    Serial.begin(9600);
+    Serial.println(F("BMP280 test"));
+  
+    if (!bmp.begin()) {  
+    Serial.println(F("Could not find a valid BMP280 sensor, Find it!"));
+    while (1);
+  }
+  
+  }    
     
 
 

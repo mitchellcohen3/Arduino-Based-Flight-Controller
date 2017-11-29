@@ -1,4 +1,5 @@
 #include <Adafruit_BMP280.h>
+#include <SPI.h>
 #include <Adafruit_BNO055.h>
 #include <utility/imumaths.h>
 #include <Adafruit_Sensor.h>
@@ -19,6 +20,8 @@ Adafruit_GPS GPS(&mySerial);
 #define GPSECHO true;
 
 TinyGPSPlus gps;  //Defining GPS for TinyGPS++ Library
+
+Adafruit_BMP280 bmp; // Defining pressure sensor for cut-down mechanism
 
 /*Create Servo Objects*/
 Servo elevator_servo;
