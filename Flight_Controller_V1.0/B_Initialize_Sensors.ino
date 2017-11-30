@@ -2,7 +2,7 @@ void initialize_all_sensors(){
     //initialize_imu();
     initialize_servos();
     initialize_GPS();
-    initialize_pres();
+    //initialize_pres();
   }
   
 void initialize_imu(){
@@ -47,7 +47,6 @@ void initialize_GPS(){
        
 }
 
-<<<<<<< HEAD
 void initialize_pres(){
     Serial.begin(9600);
     Serial.println(F("BMP280 test"));
@@ -58,7 +57,6 @@ void initialize_pres(){
   }
   
   }    
-=======
 void hold_for_gps_fix(){
   nlo = 0;
   nla = 0;
@@ -74,9 +72,6 @@ void hold_for_gps_fix(){
 
   }
 }
-
-    
->>>>>>> 71e1cc8a55006d8eb03172e6fa50ee1c511699f2
     
 
 

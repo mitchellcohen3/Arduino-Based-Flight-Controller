@@ -93,11 +93,11 @@ void position_control(){
   
   nx = getdx(x0, nlo);
   Serial.print("X Coordinate: ");
-  Serial.println(nx);
+  Serial.println(nx,9);
    
   ny = getdy(y0, nla);
   Serial.print("Y Coordinate: ");
-  Serial.println(ny);
+  Serial.println(ny,9);
   
   double head = getHeading(px, py, nx, ny);
   double heading_error = angle(head, nx, ny, setpoints[counter].x, setpoints[counter].y);

@@ -9,7 +9,7 @@ const float MAX_ROLL_LIMIT = 40;
 const float dt = 0.01; //Timestep for integration 
 const float dt_outer = 0.1; //Outerloop timestep for integration
 
-const float gps_period = 1;
+const float gps_period = 1000;
 const float imu_period = 10000;
 
 const float TOL = 4.00; // tolerance for deadband in PID
@@ -43,3 +43,6 @@ const int SERVO_PIN_RUDDER = 12;
     /*Pressure at Sea Level*/
 
 const float seaLevelhPA = 1013.25;    // 1 hPa = 100 Pa = 0.1 kPa
+
+unsigned long gps_previous = 0;
+unsigned long imu_previous = 0;
