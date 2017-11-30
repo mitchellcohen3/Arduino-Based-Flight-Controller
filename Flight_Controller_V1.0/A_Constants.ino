@@ -6,9 +6,8 @@ const int MAX_SERVO_LIMIT_Z = 50;
 
 const float MAX_ROLL_LIMIT = 40;
 
-const int MAX_ROLL_ROTATION = 20; //Max desired roll in degrees
-
-const float dt = 0.10; //Timestep for integration 
+const float dt = 0.01; //Timestep for integration 
+const float dt_outer = 0.1 //Outerloop timestep for integration
 
 const float gps_period = 1000;
 const float imu_period = 10000;
@@ -30,7 +29,7 @@ const float KD_Z = 0; //Derivative gain in z
 const float KI_Z = 0; //Integral gain in z
 
 
-const float KP_POSITION = 50;
+const float KP_POSITION = 1;
 const float KD_POSITION = 0;
 const float KI_POSITION = 0;
 

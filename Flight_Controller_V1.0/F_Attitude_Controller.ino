@@ -1,7 +1,3 @@
-
-/* Declare global variables*/
-
-
 /*Initialize PID loops for roll, pitch and yaw*/
 
 PIDLoop pitch_PID = PIDLoop(dt, 85,-30, KP_Y, KD_Y, KI_Y);

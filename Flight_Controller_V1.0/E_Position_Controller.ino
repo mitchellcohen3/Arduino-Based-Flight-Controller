@@ -1,6 +1,7 @@
 //long is x dir, lat is y dir
 //Get dist from (lo1, la1) to (lo2, la2)
 
+PIDLoop outer_loop_PID = PIDLoop(dt_outer, MAX_ROLL_LIMIT,-MAX_ROLL_LIMIT, KP_POSITION, KD_POSITION, KI_POSITION);
 
 double distTo(double la1, double lo1, double la2, double lo2){
   double p = 3.141592654;
@@ -10,6 +11,7 @@ double distTo(double la1, double lo1, double la2, double lo2){
   // convert the necessary input coords from degrees to radians;
   la1 *= (p/180);
   la2 *= (p/180);
+  
   double a, b, c;
   //using Haversine formula
   a = pow(sin(dlat/2), 2) + pow(sin(dlong/2), 2)*cos(la1)*cos(la2);
@@ -39,7 +41,7 @@ double getdx (double lo1, double lo2){
 }
 
 double getdy (double la1, double la2){
-  if (la1>la2) return (-1*return (distTo(la1, 0, la2, 0)));
+  if (la1>la2) return (-1*(distTo(la1, 0, la2, 0)));
   return (distTo(la1, 0, la2, 0));
 }
 
@@ -49,8 +51,8 @@ double getdy (double la1, double la2){
 //sign convention will have counter clockwise as positive (roll left)
 //plane's location is (x,y), set point at (x2, y2) = (dx+x, dy+y)
 double angle(double heading, double x, double y, double x2, double y2){
-    double dx=x-x2;
-    double dy=y-y2;
+    double dx=x2-x;
+    double dy=y2-y;
     double tht = atan2(dy, dx);
     double r = heading-tht;
     return r;
@@ -81,20 +83,17 @@ int spReached(struct setpt sp, double lon, double lat){
 void position_control(){
   nlo = GPS.longitude;
   nla = GPS.latitude;
+  
   if (spReached(setpoints[counter], nlo, nla)){
     counter++;
   }
+  
   nx = getdx(x0, nlo);
   ny = getdy(y0, nla);
   double head = getHeading(px, py, nx, ny);
-  double t= angle(head, nx, ny, setpoints[counter].x, setpoints[counter].y);
-  if(t>20){
-    desired_roll = MAX_ROLL_LIMIT;
-  }else if(t<-20){
-    desired_roll = (-1*MAX_ROLL_LIMIT);
-  }else{
-    desired_roll = (t/20*MAX_ROLL_LIMIT);
-  }  
+  double heading_error = angle(head, nx, ny, setpoints[counter].x, setpoints[counter].y);
+    
+  desired_roll  = outer_loop_PID.calculate_output(heading_error);
   //these store the previous x/y values
   px=nx;
   py=ny;
