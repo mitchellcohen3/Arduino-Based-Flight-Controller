@@ -9,6 +9,7 @@
 #include <Servo.h>
 #include <SoftwareSerial.h>
 #include <TinyGPS++.h>
+#include <SPI.h>
 
 /*Define all necessary sensors*/
 
@@ -18,6 +19,9 @@ Adafruit_BNO055 bno = Adafruit_BNO055();
 SoftwareSerial mySerial(3, 2);
 Adafruit_GPS GPS(&mySerial);
 #define GPSECHO true;
+
+boolean usingInterrupt = false;
+void useInterrupt(boolean); // Func prototype keeps Arduino 0023 happy
 
 TinyGPSPlus gps;  //Defining GPS for TinyGPS++ Library
 
@@ -35,8 +39,9 @@ struct setpt{
     double y;
 };
 
-double x0, y0;  //define these as the origin, now have a frame of reference for position
+float x0, y0;  //define these as the origin, now have a frame of reference for position
 double nlo, nla; //current position in long, lat
+double num_sats;
 double nx, ny;  //current position in cartesian coords
 double px=0, py=0; //previous position, set to zero because that will be our prev position in the first heading calculation
 double desired_roll = 0;
@@ -45,8 +50,8 @@ struct setpt setpoints[4];  //define an array of setpoints to reach, once we hav
 
 
 void initialize_setpoints(){
-    setpoints[0].x = 20;   //setpts are stored in meters
-    setpoints[0].y = 20;   //placeholder until we come up with an actual coordinate scheme
+    setpoints[0].x = -400;   //setpts are stored in meters
+    setpoints[0].y = 500;   //placeholder until we come up with an actual coordinate scheme
     setpoints[1].x = 0;   
     setpoints[1].y = 0;
     setpoints[2].x = 20;   
@@ -58,10 +63,12 @@ void initialize_setpoints(){
 void setup() {
     Serial.begin(9600);
     initialize_all_sensors();
-    delay(5000);
-    
+    Serial.println("Sensors Initialized");
     //this loop checks to make sure there is a fix, new data is received, and that it is parsed, otherwise it tries again
-    while(1){
+    
+    hold_for_gps_fix();
+    
+    /*while(1){
         if (!GPS.fix) continue;
         char c = GPS.read();
         if (GPS.newNMEAreceived()) {
@@ -71,19 +78,28 @@ void setup() {
             break;
         }    
     }
+    */
+    
     x0 = (gps.location.lng()); //using TinyGPS++ Library
     y0 = (gps.location.lat()); //using TinyGPS++ Library
+    Serial.println(x0, 6);
+    Serial.println(y0, 6);
+
+    
+    
+   
     //x0 = GPS.longitude;
     //y0 = GPS.latitude;
     initialize_setpoints();
+    Serial.println("Setpoints initialized");
     //Cut_Down();  insert the procedure to cut down the plane
-    //stabilize();*/
+    //stabilize();
     
 }
 
 
 void loop() {
-    read_write_data();
+    //read_write_data();
     control();
 }
 
