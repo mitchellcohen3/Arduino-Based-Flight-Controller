@@ -41,4 +41,6 @@ const int SERVO_PIN_AILERON_LEFT = 10;
 const int SERVO_PIN_AILERON_RIGHT = 11;
 const int SERVO_PIN_RUDDER = 12;
 
+    /*Pressure at Sea Level*/
 
+const float seaLevelhPA = 1013.25;    // 1 hPa = 100 Pa = 0.1 kPa

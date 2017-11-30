@@ -19,6 +19,7 @@
 //Adafruit_BMP280 bmp(BMP_CS, BMP_MOSI, BMP_MISO,  BMP_SCK);
 
 
+
 void get_altitude() {
     Serial.print(F("Temperature = "));
     Serial.print(bmp.readTemperature());
@@ -29,7 +30,7 @@ void get_altitude() {
     Serial.println(" Pa");
 
     Serial.print(F("Approx altitude = "));
-    Serial.print(bmp.readAltitude(1013.25)); // this should be adjusted to your local forcast
+    Serial.print(bmp.readAltitude(seaLevelhPA)); // this should be adjusted to your local forcast
     Serial.println(" m");
     
     Serial.println();
