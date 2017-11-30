@@ -64,9 +64,6 @@ void setup() {
             }
             break;
         }    
-    }        
-    x0 = GPS.longitude;
-    y0 = GPS.latitude;
     initialize_setpoints();
     //Cut_Down();  insert the procedure to cut down the plane
     //stabilize();*/

@@ -5,7 +5,6 @@ PIDLoop outer_loop_PID = PIDLoop(dt_outer, MAX_ROLL_LIMIT,-MAX_ROLL_LIMIT, KP_PO
 
 double distTo(double la1, double lo1, double la2, double lo2){
   double p = 3.141592654;
-  double radius = 6371000; //earth's radius in meters 
   double dlat = (p/180)*(la2-la1);
   double dlong = (p/180)*(lo2-lo1);
   // convert the necessary input coords from degrees to radians;
@@ -54,7 +53,6 @@ double angle(double heading, double x, double y, double x2, double y2){
     double dx=x2-x;
     double dy=y2-y;
     double tht = atan2(dy, dx);
-    double r = heading-tht;
     return r;
 }
 
@@ -81,6 +79,7 @@ int spReached(struct setpt sp, double lon, double lat){
 }  
 
 void position_control(){
+<<<<<<< HEAD
   nlo = GPS.longitude;
   nla = GPS.latitude;
   
