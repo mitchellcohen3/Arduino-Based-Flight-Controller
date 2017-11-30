@@ -1,5 +1,5 @@
 void initialize_all_sensors(){
-    initialize_imu();
+    //initialize_imu();
     initialize_servos();
     initialize_GPS();
   }
@@ -44,6 +44,22 @@ void initialize_GPS(){
     GPS.sendCommand(PGCMD_ANTENNA);      
     //useInterrupt(false);  //option to have a timer interrupt go off and read data every 1 millisecond 
        
+}
+
+void hold_for_gps_fix(){
+  nlo = 0;
+  nla = 0;
+  num_sats = 0;
+  
+  //Stuck in following loop until a gps fix is obtained.
+  while (nla == 0 || nlo == 0 || num_sats <= 2){
+    
+   while (mySerial.available())  gps.encode(mySerial.read());
+   nla = (gps.location.lat());
+   nlo = (gps.location.lng());
+   num_sats = gps.satellites.value();
+
+  }
 }
 
     

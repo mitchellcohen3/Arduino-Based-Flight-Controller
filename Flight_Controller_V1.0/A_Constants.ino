@@ -7,9 +7,9 @@ const int MAX_SERVO_LIMIT_Z = 50;
 const float MAX_ROLL_LIMIT = 40;
 
 const float dt = 0.01; //Timestep for integration 
-const float dt_outer = 0.1 //Outerloop timestep for integration
+const float dt_outer = 0.1; //Outerloop timestep for integration
 
-const float gps_period = 1000;
+const float gps_period = 1;
 const float imu_period = 10000;
 
 const float TOL = 4.00; // tolerance for deadband in PID
