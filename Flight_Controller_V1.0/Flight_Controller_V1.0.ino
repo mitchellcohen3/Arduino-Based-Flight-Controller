@@ -39,7 +39,7 @@ struct setpt{
     double y;
 };
 
-float x0, y0;  //define these as the origin, now have a frame of reference for position
+float x_init, y_init;  //define these as the origin, now have a frame of reference for position
 double nlo, nla; //current position in long, lat
 double num_sats;
 double nx, ny;  //current position in cartesian coords
@@ -80,16 +80,12 @@ void setup() {
     }
     */
     
-    x0 = (gps.location.lng()); //using TinyGPS++ Library
-    y0 = (gps.location.lat()); //using TinyGPS++ Library
-    Serial.println(x0, 6);
-    Serial.println(y0, 6);
+    x_init = (gps.location.lng()); //using TinyGPS++ Library
+    y_init = (gps.location.lat()); //using TinyGPS++ Library
+    Serial.println(x_init, 6);
+    Serial.println(y_init, 6);
 
     
-    
-   
-    //x0 = GPS.longitude;
-    //y0 = GPS.latitude;
     initialize_setpoints();
     Serial.println("Setpoints initialized");
     //Cut_Down();  insert the procedure to cut down the plane
