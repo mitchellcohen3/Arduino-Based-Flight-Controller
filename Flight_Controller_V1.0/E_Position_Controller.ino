@@ -69,33 +69,30 @@ int spReached(struct setpt sp, double lon, double lat){
   //get the difference in lat/long of the setpt from the origin 
   //make sure the dla, dlo values correspond w the negatives if any problems arise in debugging
   double dla = mtolat(sp.y);
-  double la = y0 + dla;
+  double la = y_init + dla;
   double dlo = mtolong(sp.x, la);
-  double lo = x0 + dlo;
+  double lo = x_init + dlo;
   double dist = distTo(la, lo, lat, lon);
   if(dist<5.0) return 1;
   return 0;
 }  
 
 void position_control(){
-//  nlo = GPS.longitude;
-//  nla = GPS.latitude;
   
   nlo = (gps.location.lng()); //Using TinyGPS++ library
   nla = (gps.location.lat()); //Using TinyGPS++ library
-  //nlo = GPS.longitude;
-  //nla = GPS.latitude;
+
   
   if (spReached(setpoints[counter], nlo, nla)){
     counter++;
     Serial.println("Setpoint Reached");
   }
   
-  nx = getdx(x0, nlo);
+  nx = getdx(x_init, nlo);
   Serial.print("X Coordinate: ");
   Serial.println(nx,9);
    
-  ny = getdy(y0, nla);
+  ny = getdy(y_init, nla);
   Serial.print("Y Coordinate: ");
   Serial.println(ny,9);
   
