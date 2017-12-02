@@ -22,7 +22,8 @@ double distTo(double la1, double lo1, double la2, double lo2){
 //use the following to get the coords of the set points
 double mtolat(double dy){
   double r = 6367302 + 40; //earth's radius in meters 
-  return (PI/180)*dy/r;
+  double y = (PI/180)*dy;
+  return y/r;
 }
 
 double mtolong(double dx, double lat0){
@@ -65,14 +66,17 @@ double getHeading(double x1, double y1, double x2, double y2){
 }
 //return 1 if sp is reached, advance to next point
 //takes in the current position and setpt
-int spReached(struct setpt sp, double lon, double lat){
+int spReached(struct setpt sp, double lon, double lati){
   //get the difference in lat/long of the setpt from the origin 
   //make sure the dla, dlo values correspond w the negatives if any problems arise in debugging
-  double dla = mtolat(sp.y);
-  double la = y_init + dla;
-  double dlo = mtolong(sp.x, la);
-  double lo = x_init + dlo;
-  double dist = distTo(la, lo, lat, lon);
+  double xp = getdx(lon, x_init);
+  double yp = getdy(lati, y_init);
+  double dx = sp.x-xp;
+  double dy = sp.y-yp;
+  dx*=dx;
+  dy*=dy;
+  double dist = sqrt(dx+dy);
+  Serial.println(dist, 8);
   if(dist<5.0) return 1;
   return 0;
 }  
@@ -81,8 +85,11 @@ void position_control(){
   
   nlo = (gps.location.lng()); //Using TinyGPS++ library
   nla = (gps.location.lat()); //Using TinyGPS++ library
+  delay(2000);
+  double ty = mtolat(setpoints[counter].y);
+  double tx = mtolong(setpoints[counter].x, ty);
 
-  
+  Serial.println(tx, 8);
   if (spReached(setpoints[counter], nlo, nla)){
     counter++;
     Serial.println("Setpoint Reached");
@@ -103,7 +110,7 @@ void position_control(){
   //these store the previous x/y values
   px=nx;
   py=ny;
+  delay(5000);
 }
-
 
 
