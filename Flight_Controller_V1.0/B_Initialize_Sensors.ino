@@ -1,8 +1,9 @@
 void initialize_all_sensors(){
     //initialize_imu();
-    initialize_servos();
-    initialize_GPS();
-    //initialize_pres();
+    //initialize_servos();
+    //initialize_GPS();
+    initialize_pres();
+    check_cutdown_ready();
   }
   
 void initialize_imu(){
@@ -49,7 +50,7 @@ void initialize_GPS(){
 
 void initialize_pres(){
     Serial.begin(9600);
-    Serial.println(F("BMP280 test"));
+    Serial.println(F("BMP280 pressure sensor GOOD TO GO"));
   
     if (!bmp.begin()) {  
     Serial.println(F("Could not find a valid BMP280 sensor, Find it!"));
@@ -72,6 +73,17 @@ void hold_for_gps_fix(){
 
   }
 }
+
+int cd_ready = 0; //move this later?
+
+void check_cutdown_ready() {
+  if ( temp_ready == 1 ){ //CHECK A SERVO POSITION?  --> depends on the mechanism
+    cd_ready = 1;
+    }
+  
+  }
+
+ 
     
 
 

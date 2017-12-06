@@ -66,7 +66,7 @@ void setup() {
     Serial.println("Sensors Initialized");
     //this loop checks to make sure there is a fix, new data is received, and that it is parsed, otherwise it tries again
     
-    hold_for_gps_fix();
+    //hold_for_gps_fix();
     
     /*while(1){
         if (!GPS.fix) continue;
@@ -88,14 +88,15 @@ void setup() {
     
     initialize_setpoints();
     Serial.println("Setpoints initialized");
-    //Cut_Down();  insert the procedure to cut down the plane
-    //stabilize();
+
     
 }
 
-
+ //stabilize();
+ 
 void loop() {
     //read_write_data();
+    get_altitude(); // Calling cut-down function
     control();
 }
 

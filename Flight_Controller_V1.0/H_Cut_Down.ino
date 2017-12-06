@@ -18,9 +18,10 @@
 //Adafruit_BMP280 bmp(BMP_CS); // hardware SPI
 //Adafruit_BMP280 bmp(BMP_CS, BMP_MOSI, BMP_MISO,  BMP_SCK);
 
-
+float current_alt = 0.0; // initializing
 
 void get_altitude() {
+
     Serial.print(F("Temperature = "));
     Serial.print(bmp.readTemperature());
     Serial.println(" *C");
@@ -30,11 +31,29 @@ void get_altitude() {
     Serial.println(" Pa");
 
     Serial.print(F("Approx altitude = "));
-    Serial.print(bmp.readAltitude(seaLevelhPA)); // this should be adjusted to your local forcast
+    Serial.print(bmp.readAltitude(seaLevelhPA)); // adjusted sea level pressure
+    Serial.println(" m");
+    
+    current_alt = bmp.readAltitude(seaLevelhPA); // to be used to save values onto SD card?
+    Serial.print(F("Stored altitude test = "));
+    Serial.print(current_alt);
     Serial.println(" m");
     
     Serial.println();
     delay(2000);
+
+    Serial.print(F("cd_ready = ")); // ready for cutdown ( 1 = yes, 0 = no)
+    Serial.println(cd_ready); 
+    Serial.println();
+
+    if ((current_alt >= cut_alt) && (cd_ready == 1)){ // Needs to reach the cut-down altitude and the cut-down mechanism needs to be ready to release, so it won't re-enter this loop
+      
+      // TURN ON SERVO TO CUT DOWN
+
+      cd_ready = 0;
+
+      }
+    
 }
 
 
