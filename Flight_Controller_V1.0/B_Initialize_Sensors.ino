@@ -33,7 +33,8 @@ void initialize_servos(){
     aileron_servo_right.write(90);
     elevator_servo.write(55);
     rudder_servo.write(110);
-    
+
+    myservo.attach(9);  // attaches the servo on pin 9 to the servo object
     Serial.println("Servos Initialized");
 }
 

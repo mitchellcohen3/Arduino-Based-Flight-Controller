@@ -48,7 +48,7 @@ void get_altitude() {
 
     if ((current_alt >= cut_alt) && (cd_ready == 1)){ // Needs to reach the cut-down altitude and the cut-down mechanism needs to be ready to release, so it won't re-enter this loop
       
-      // TURN ON SERVO TO CUT DOWN
+      move_cutdown_test();
 
       cd_ready = 0;
 

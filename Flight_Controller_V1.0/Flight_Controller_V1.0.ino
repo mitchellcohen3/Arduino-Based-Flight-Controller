@@ -33,6 +33,10 @@ Servo aileron_servo_left;
 Servo aileron_servo_right;
 Servo rudder_servo;
 
+Servo myservo;  // create servo object to control a servo
+
+
+
 struct setpt{
     //define a set point as a structure with x and y coordinates (in meters)
     double x;
