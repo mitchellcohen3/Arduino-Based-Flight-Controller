@@ -39,6 +39,7 @@ const int SERVO_PIN_ELEVATOR = 9;
 const int SERVO_PIN_AILERON_LEFT = 10;
 const int SERVO_PIN_AILERON_RIGHT = 11;
 const int SERVO_PIN_RUDDER = 12;
+const int SERVO_PIN_CUTDOWN = 13;
 
     /*Pressure at Sea Level*/
 

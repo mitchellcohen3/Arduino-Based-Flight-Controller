@@ -1,5 +1,4 @@
 #include <Adafruit_BMP280.h>
-#include <SPI.h>
 #include <Adafruit_BNO055.h>
 #include <utility/imumaths.h>
 #include <Adafruit_Sensor.h>
@@ -7,18 +6,18 @@
 #include <math.h> 
 #include <Wire.h>   
 #include <Servo.h>
-#include <SoftwareSerial.h>
 #include <TinyGPS++.h>
 #include <SPI.h>
+#include <SD.h>
 
 /*Define all necessary sensors*/
 
 #define BNO055_SAMPLERATE_DELAY_MS (100)
 Adafruit_BNO055 bno = Adafruit_BNO055();
 
-SoftwareSerial mySerial(3, 2);
+#define mySerial Serial1
 Adafruit_GPS GPS(&mySerial);
-#define GPSECHO true;
+#define GPSECHO true
 
 boolean usingInterrupt = false;
 void useInterrupt(boolean); // Func prototype keeps Arduino 0023 happy
@@ -32,9 +31,7 @@ Servo elevator_servo;
 Servo aileron_servo_left;
 Servo aileron_servo_right;
 Servo rudder_servo;
-
-Servo myservo;  // create servo object to control a servo
-
+Servo cutdown_servo;  
 
 
 struct setpt{
@@ -44,14 +41,21 @@ struct setpt{
 };
 
 float x_init, y_init;  //define these as the origin, now have a frame of reference for position
-double nlo, nla; //current position in long, lat
+float nlo, nla; //current position in long, lat
 double num_sats;
 double nx, ny;  //current position in cartesian coords
 double px=0, py=0; //previous position, set to zero because that will be our prev position in the first heading calculation
-double desired_roll = 0;
+float desired_roll = 0;
 int counter = 0;   //counts the current setpt
 struct setpt setpoints[4];  //define an array of setpoints to reach, once we have reached the last point, initiate landing
 
+String header = "millis, X, Y, Z, Longatude, Latitude, Elevator, L Aielron, R Aileron, Rudder";
+int file_num; 
+String datastring;
+String file_prefix = "data"; // File name prefix for datalogging
+String event_file_prefix = "log"; // Event log file name
+String file_type = ".txt"; // File type
+const int chipSelect = BUILTIN_SDCARD;
 
 void initialize_setpoints(){
     setpoints[0].x = -400;   //setpts are stored in meters
@@ -66,26 +70,20 @@ void initialize_setpoints(){
 
 void setup() {
     Serial.begin(9600);
+       while (!Serial) {
+    ; // wait for serial port to connect. Needed for Leonardo only
+  }
+  
     initialize_all_sensors();
+    
     Serial.println("Sensors Initialized");
     //this loop checks to make sure there is a fix, new data is received, and that it is parsed, otherwise it tries again
     
-    //hold_for_gps_fix();
-    
-    /*while(1){
-        if (!GPS.fix) continue;
-        char c = GPS.read();
-        if (GPS.newNMEAreceived()) {
-            if (!GPS.parse(GPS.lastNMEA())){
-                continue;
-            }
-            break;
-        }    
-    }
-    */
+    hold_for_gps_fix();
     
     x_init = (gps.location.lng()); //using TinyGPS++ Library
     y_init = (gps.location.lat()); //using TinyGPS++ Library
+    
     Serial.println(x_init, 6);
     Serial.println(y_init, 6);
 
@@ -93,13 +91,14 @@ void setup() {
     initialize_setpoints();
     Serial.println("Setpoints initialized");
 
+    file_num = create_file();
+    Serial.println("File Created");
     
 }
-
- //stabilize();
  
 void loop() {
-    //read_write_data();
+    read_data();
+    write_data();
     get_altitude(); // Calling cut-down function
     control();
 }
