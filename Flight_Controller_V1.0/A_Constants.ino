@@ -43,7 +43,7 @@ const int SERVO_PIN_CUTDOWN = 13;
 
     /*Pressure at Sea Level*/
 
-const float seaLevelhPA = 1013.25;    // 1 hPa = 100 Pa = 0.1 kPa
+// const float seaLevelhPA = 1013.25;    // 1 hPa = 100 Pa = 0.1 kPa
 const int temp_ready = 1; // Status of cut-down mechanism (Until we set up the input coming from the actual mechanism)
 const float cut_alt = 60; // 200ft = approx 60m
 

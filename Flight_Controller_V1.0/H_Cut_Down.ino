@@ -13,12 +13,14 @@
 #define BMP_MOSI 11 
 #define BMP_CS 10
 
-// TO DELETE WHEN WORKING (from original example)
-//Adafruit_BMP280 bmp; // I2C
-//Adafruit_BMP280 bmp(BMP_CS); // hardware SPI
-//Adafruit_BMP280 bmp(BMP_CS, BMP_MOSI, BMP_MISO,  BMP_SCK);
-
 float current_alt = 0.0; // initializing
+float seaLevelhPA = 1013.25; // will be replaced by first pressure reading from pressure sensor
+
+void get_sealevel_pressure(){
+  
+  seaLevelhPA = bmp.readPressure();
+  
+  }
 
 void get_altitude() {
 
@@ -34,7 +36,7 @@ void get_altitude() {
     Serial.print(bmp.readAltitude(seaLevelhPA)); // adjusted sea level pressure
     Serial.println(" m");
     
-    current_alt = bmp.readAltitude(seaLevelhPA); // to be used to save values onto SD card?
+    current_alt = bmp.readAltitude(seaLevelhPA);
     Serial.print(F("Stored altitude test = "));
     Serial.print(current_alt);
     Serial.println(" m");

@@ -56,8 +56,15 @@ void initialize_GPS(){
 }
 
 void initialize_pres(){
+    float seaLevelhPA = 1013.25; // will be replaced by first pressure reading from pressure sensor, also defined in H_Cut_Down (redundant?)
+    
     Serial.begin(9600);
     Serial.println(F("BMP280 test"));
+    
+    get_sealevel_pressure();
+    Serial.println(F("Baseline sea level pressure = "));
+    Serial.println(seaLevelhPA);
+    Serial.println(F(" hPA"));    
   
     if (!bmp.begin()) {  
     Serial.println(F("Could not find a valid BMP280 sensor, Find it!"));
