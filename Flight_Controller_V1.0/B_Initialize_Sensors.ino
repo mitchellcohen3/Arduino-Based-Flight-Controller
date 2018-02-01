@@ -3,11 +3,10 @@ void initialize_all_sensors(){
     initialize_servos();
     initialize_GPS();
     initialize_pres();
-      check_cutdown_ready();
+    check_cutdown_ready();
   }
   
 void initialize_imu(){
-  Serial.println("Orientation Sensor Raw Data Test"); Serial.println("");
   if(!bno.begin())
   {
     /* There was a problem detecting the BNO055 ... check your connections */
@@ -30,8 +29,8 @@ void initialize_servos(){
 
     /*Write initial angles to servos*/
     
-    aileron_servo_left.write(55);
-    aileron_servo_right.write(90);
+    aileron_servo_left.write(75);
+    aileron_servo_right.write(100);
     elevator_servo.write(55);
     rudder_servo.write(110);
 
@@ -56,9 +55,6 @@ void initialize_GPS(){
 }
 
 void initialize_pres(){
-    Serial.begin(9600);
-    Serial.println(F("BMP280 test"));
-  
     if (!bmp.begin()) {  
     Serial.println(F("Could not find a valid BMP280 sensor, Find it!"));
     while (1);
@@ -163,6 +159,7 @@ void check_cutdown_ready() {
   }
  
     
+
 
 
 

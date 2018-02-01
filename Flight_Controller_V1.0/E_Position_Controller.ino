@@ -106,11 +106,12 @@ void position_control(){
   double head = getHeading(px, py, nx, ny);
   double heading_error = angle(head, nx, ny, setpoints[counter].x, setpoints[counter].y);
     
-  desired_roll  = outer_loop_PID.calculate_output(heading_error);
+  //desired_roll  = outer_loop_PID.calculate_output(heading_error);
   //these store the previous x/y values
   px=nx;
   py=ny;
   delay(5000);
 }
+
 
 

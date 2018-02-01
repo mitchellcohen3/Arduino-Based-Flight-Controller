@@ -1,22 +1,16 @@
-const double DESIRED_PITCH = 0;
-
-const int MAX_SERVO_LIMIT_X = 80;
-const int MAX_SERVO_LIMIT_Y = 80;
-const int MAX_SERVO_LIMIT_Z = 50;
-
 const float MAX_ROLL_LIMIT = 40;
 
 const float dt = 0.01; //Timestep for integration 
 const float dt_outer = 0.1; //Outerloop timestep for integration
 
-const float gps_period = 1000;
-const float imu_period = 10000;
+const double gps_period = 1000;
+const double imu_period = 10;
 
-const float TOL = 4.00; // tolerance for deadband in PID
+const float TOL = 1.00; // tolerance for deadband in PID
 
     /*Input gains below*/
 
-const float KP_X = 200; //Proportional gain in x
+const float KP_X = 100; //Proportional gain in x
 const float KD_X = 0; //Derivative gain in x
 const float KI_X = 0; //Integral gain in x
 
@@ -35,19 +29,19 @@ const float KI_POSITION = 0;
 
     /*Define Servo pins*/
 
-const int SERVO_PIN_ELEVATOR = 9;
-const int SERVO_PIN_AILERON_LEFT = 10;
-const int SERVO_PIN_AILERON_RIGHT = 11;
-const int SERVO_PIN_RUDDER = 12;
+const int SERVO_PIN_ELEVATOR = 10;
+const int SERVO_PIN_AILERON_LEFT = 7;
+const int SERVO_PIN_AILERON_RIGHT = 9;
+const int SERVO_PIN_RUDDER = 8;
 const int SERVO_PIN_CUTDOWN = 13;
 
-    /*Pressure at Sea Level*/
-
-const float seaLevelhPA = 1013.25;    // 1 hPa = 100 Pa = 0.1 kPa
 const int temp_ready = 1; // Status of cut-down mechanism (Until we set up the input coming from the actual mechanism)
 const float cut_alt = 60; // 200ft = approx 60m
+float seaLevelhPA;
+float base_altitude;
 
 unsigned long gps_previous = 0;
 unsigned long imu_previous = 0;
+
 
 

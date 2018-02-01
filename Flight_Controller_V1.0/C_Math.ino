@@ -1,3 +1,7 @@
+float toRad(float convert){
+    return convert*PI/180;
+}
+
 imu::Quaternion euler_to_quat(double pitch, double roll, double yaw){ 
   
   /*Converts a given Euler rotation to a quaternion*/
@@ -104,9 +108,18 @@ float calculate_gamma(imu::Quaternion q){
         float sqy = q.y()*q.y();
         float sqz = q.z()*q.z();
 
-        gamma  = atan2(2*q.y()*q.w() - 2*q.x()*q.z(), 1 - 2*sqy - 2*sqz);
+        gamma  = atan2(2*q.x()*q.w() - 2*q.x()*q.z(), 1 - 2*sqy - 2*sqz);
       }
+      
       return gamma;
+}
+
+boolean detect_discontinuity(float desired_yaw_previous, float desired_yaw){
+  
+    if(abs(desired_yaw - desired_yaw_previous) > 6.1){
+      return true;
+    }
+      return false;
 }
 
 

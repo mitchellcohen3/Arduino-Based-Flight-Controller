@@ -24,7 +24,7 @@ void useInterrupt(boolean); // Func prototype keeps Arduino 0023 happy
 
 TinyGPSPlus gps;  //Defining GPS for TinyGPS++ Library
 
-Adafruit_BMP280 bmp; // Defining pressure sensor for cut-down mechanism
+Adafruit_BMP280 bmp; // hardware SPI // Defining pressure sensor for cut-down mechanism
 
 /*Create Servo Objects*/
 Servo elevator_servo;
@@ -32,7 +32,6 @@ Servo aileron_servo_left;
 Servo aileron_servo_right;
 Servo rudder_servo;
 Servo cutdown_servo;  
-
 
 struct setpt{
     //define a set point as a structure with x and y coordinates (in meters)
@@ -45,17 +44,24 @@ float nlo, nla; //current position in long, lat
 double num_sats;
 double nx, ny;  //current position in cartesian coords
 double px=0, py=0; //previous position, set to zero because that will be our prev position in the first heading calculation
-float desired_roll = 0;
+float desired_roll, desired_pitch = 0;
 int counter = 0;   //counts the current setpt
 struct setpt setpoints[4];  //define an array of setpoints to reach, once we have reached the last point, initiate landing
 
-String header = "millis, X, Y, Z, Longatude, Latitude, Elevator, L Aielron, R Aileron, Rudder";
+String header = "millis, Pressure, Altitude, X, Y, Z, Longatude, Latitude, Elevator Servo, L Aielron Servo, R Aileron Servo, Rudder Servo, Desired Pitch, Desired Roll";
 int file_num; 
 String datastring;
 String file_prefix = "data"; // File name prefix for datalogging
 String event_file_prefix = "log"; // Event log file name
 String file_type = ".txt"; // File type
 const int chipSelect = BUILTIN_SDCARD;
+
+#define CHANNEL_1_PIN 3 //Channel 1 Pin From the Rx
+#define CHANNEL_2_PIN 4 //Channel 2 pin from the Rx
+
+volatile unsigned long timer_start; 
+volatile int last_interrupt_time; //calcSignal is the interrupt handler 
+unsigned long pulse_time;
 
 void initialize_setpoints(){
     setpoints[0].x = -400;   //setpts are stored in meters
@@ -70,19 +76,23 @@ void initialize_setpoints(){
 
 void setup() {
     Serial.begin(9600);
+    
+    
        while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
+    ; // wait for serial port to connect. Needed only for USB connection
   }
+  
+  
   
     initialize_all_sensors();
     
     Serial.println("Sensors Initialized");
     //this loop checks to make sure there is a fix, new data is received, and that it is parsed, otherwise it tries again
     
-    hold_for_gps_fix();
+    // hold_for_gps_fix();
     
-    x_init = (gps.location.lng()); //using TinyGPS++ Library
-    y_init = (gps.location.lat()); //using TinyGPS++ Library
+    //x_init = (gps.location.lng()); //using TinyGPS++ Library
+    //y_init = (gps.location.lat()); //using TinyGPS++ Library
     
     Serial.println(x_init, 6);
     Serial.println(y_init, 6);
@@ -93,13 +103,18 @@ void setup() {
 
     file_num = create_file();
     Serial.println("File Created");
+        
+        
+    timer_start = 0; 
+    attachInterrupt(CHANNEL_1_PIN, calcSignal, CHANGE);
     
 }
  
 void loop() {
     read_data();
     write_data();
-    get_altitude(); // Calling cut-down function
+    //get_altitude(); // Calling cut-down function
     control();
 }
+
 

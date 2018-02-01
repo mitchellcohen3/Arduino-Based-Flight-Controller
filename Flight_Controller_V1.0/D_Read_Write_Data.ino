@@ -1,13 +1,36 @@
 imu::Quaternion q_actual;
+float desired_yaw_euler;
 float desired_yaw;
 float actual_heading;
 unsigned long previous_file_size = 0;
+float pressure;
+int switch_state = 1;
+float desired_yaw_previous = 0;
+float current_alt;
 
 void read_data(){
+  
+    desired_pitch = map(pulse_time, 1000, 2000, -50, 50);
+    desired_pitch = -toRad(desired_pitch);
+    Serial.println(desired_pitch);
+    
     q_actual = bno.getQuat(); //Get actual orientation (in quaternions)
+    
     imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
-    desired_yaw = (euler.x())*PI/180;
+    desired_yaw = toRad(euler.x());
+    
+    pressure = bmp.readPressure();
 
+//This part is needed to detect a discontinuity in the yaw and flip a switch
+    if(detect_discontinuity(desired_yaw_previous, desired_yaw)){
+          if(switch_state == 1){
+              switch_state = -1;              
+          }     
+          else{
+              switch_state = 1;
+          }
+    }
+    
     while (Serial1.available())  gps.encode(Serial1.read());
     nlo = (gps.location.lng()); //Using TinyGPS++ library
     nla = (gps.location.lat()); //Using TinyGPS++ library
@@ -15,6 +38,10 @@ void read_data(){
     
     datastring = "";
     datastring += millis();
+    datastring += ",";
+    datastring += pressure;
+    datastring += ",";
+    datastring += current_alt;
     datastring += ",";
     datastring += euler.x();
     datastring += ",";
@@ -34,8 +61,12 @@ void read_data(){
     datastring += ",";
     datastring += rudder_servo.read();
     datastring += ",";
+    datastring += desired_pitch;
+    datastring += ",";
+    datastring += desired_roll;
+    datastring += ",";
     
-    
+    desired_yaw_previous = desired_yaw;
 }
 
 
@@ -55,4 +86,5 @@ void write_data(){
    }
   
 }
+
 
