@@ -55,6 +55,18 @@ void initialize_GPS(){
 }
 
 void initialize_pres(){
+<<<<<<< HEAD
+=======
+    
+    Serial.begin(9600);
+    Serial.println(F("BMP280 test"));
+    
+    float seaLevelhPA = get_sealevel_pressure();
+    Serial.println(F("Baseline sea level pressure = "));
+    Serial.println(seaLevelhPA);
+    Serial.println(F(" hPA"));    
+  
+>>>>>>> 069728703630d61ecf46326ca6022fefb0f86bf5
     if (!bmp.begin()) {  
     Serial.println(F("Could not find a valid BMP280 sensor, Find it!"));
     while (1);
