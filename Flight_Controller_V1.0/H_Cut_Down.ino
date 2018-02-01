@@ -16,10 +16,10 @@
 float current_alt = 0.0; // initializing
 float seaLevelhPA = 1013.25; // will be replaced by first pressure reading from pressure sensor
 
-void get_sealevel_pressure(){
+float get_sealevel_pressure(){
   
   seaLevelhPA = bmp.readPressure();
-  
+  return seaLevelhPA;
   }
 
 void get_altitude() {
