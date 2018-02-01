@@ -8,17 +8,6 @@
 
  ***************************************************************************/
 
-#define BMP_SCK 13
-#define BMP_MISO 12
-#define BMP_MOSI 11 
-#define BMP_CS 10
-
-<<<<<<< HEAD
-// TO DELETE WHEN WORKING (from original example)
-//Adafruit_BMP280 bmp; // I2C
-//Adafruit_BMP280 bmp(BMP_CS); // hardware SPI
-//Adafruit_BMP280 bmp(BMP_CS, BMP_MOSI, BMP_MISO,  BMP_SCK);
-=======
 float current_alt = 0.0; // initializing
 float seaLevelhPA = 1013.25; // will be replaced by first pressure reading from pressure sensor
 
@@ -27,7 +16,6 @@ float get_sealevel_pressure(){
   seaLevelhPA = bmp.readPressure();
   return seaLevelhPA;
   }
->>>>>>> 069728703630d61ecf46326ca6022fefb0f86bf5
 
 void get_altitude() {
 

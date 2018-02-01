@@ -35,12 +35,8 @@ const int SERVO_PIN_AILERON_RIGHT = 9;
 const int SERVO_PIN_RUDDER = 8;
 const int SERVO_PIN_CUTDOWN = 13;
 
-<<<<<<< HEAD
-=======
     /*Pressure at Sea Level*/
 
-// const float seaLevelhPA = 1013.25;    // 1 hPa = 100 Pa = 0.1 kPa
->>>>>>> 069728703630d61ecf46326ca6022fefb0f86bf5
 const int temp_ready = 1; // Status of cut-down mechanism (Until we set up the input coming from the actual mechanism)
 const float cut_alt = 60; // 200ft = approx 60m
 float seaLevelhPA;

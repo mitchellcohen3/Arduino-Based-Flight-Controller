@@ -55,9 +55,6 @@ void initialize_GPS(){
 }
 
 void initialize_pres(){
-<<<<<<< HEAD
-=======
-    
     Serial.begin(9600);
     Serial.println(F("BMP280 test"));
     
@@ -66,12 +63,11 @@ void initialize_pres(){
     Serial.println(seaLevelhPA);
     Serial.println(F(" hPA"));    
   
->>>>>>> 069728703630d61ecf46326ca6022fefb0f86bf5
     if (!bmp.begin()) {  
     Serial.println(F("Could not find a valid BMP280 sensor, Find it!"));
     while (1);
   }
-  }   
+}   
    
 void hold_for_gps_fix(){
   float nlo2 = 0;
