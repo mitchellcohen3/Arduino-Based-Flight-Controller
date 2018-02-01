@@ -9,6 +9,7 @@
 #include <TinyGPS++.h>
 #include <SPI.h>
 #include <SD.h>
+#include <Filters.h>
 
 /*Define all necessary sensors*/
 
