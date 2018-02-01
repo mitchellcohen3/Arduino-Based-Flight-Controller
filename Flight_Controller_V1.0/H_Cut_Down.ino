@@ -8,7 +8,6 @@
 
  ***************************************************************************/
 
-float current_alt = 0.0; // initializing
 float seaLevelhPA = 1013.25; // will be replaced by first pressure reading from pressure sensor
 
 float get_sealevel_pressure(){

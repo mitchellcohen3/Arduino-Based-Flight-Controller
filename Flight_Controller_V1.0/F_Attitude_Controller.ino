@@ -44,8 +44,8 @@ double z_error; //Error in rotation about z
     
     imu::Quaternion q_ref = euler_to_quat(desired_pitch, desired_roll, desired_yaw);    //Calculate desired rotation in quaternions
     q_ref.normalize(); //Normalize the reference quaternion
-    q_actual.normalize(); //Normalize the measured quaternion
-    imu::Quaternion q_error = calculate_error_quat(q_ref, q_actual); //Calculate error quaternion from desired rotation compared to actual rotation
+    q_actual_filtered.normalize(); //Normalize the measured quaternion
+    imu::Quaternion q_error = calculate_error_quat(q_ref, q_actual_filtered); //Calculate error quaternion from desired rotation compared to actual rotation
 
    /*Determine true error quaternion based on the current yaw location*/
 

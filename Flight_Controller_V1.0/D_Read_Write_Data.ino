@@ -1,4 +1,5 @@
 imu::Quaternion q_actual;
+imu::Quaternion q_actual_filtered;
 float desired_yaw_euler;
 float desired_yaw;
 float actual_heading;
@@ -8,6 +9,12 @@ int switch_state = 1;
 float desired_yaw_previous = 0;
 float current_alt;
 
+
+// filters out changes faster that 5 Hz.
+float filterFrequency = 5.0;  
+// create a one pole (RC) lowpass filter
+FilterOnePole lowpassFilter( LOWPASS, filterFrequency );  
+
 void read_data(){
   
     desired_pitch = map(pulse_time, 1000, 2000, -50, 50);
@@ -15,6 +22,11 @@ void read_data(){
     Serial.println(desired_pitch);
     
     q_actual = bno.getQuat(); //Get actual orientation (in quaternions)
+
+    q_actual_filtered.w() = lowpassFilter.input( q_actual.w() );
+    q_actual_filtered.x() = lowpassFilter.input( q_actual.x() );
+    q_actual_filtered.y() = lowpassFilter.input( q_actual.y() );
+    q_actual_filtered.z() = lowpassFilter.input( q_actual.z() );
     
     imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
     desired_yaw = toRad(euler.x());

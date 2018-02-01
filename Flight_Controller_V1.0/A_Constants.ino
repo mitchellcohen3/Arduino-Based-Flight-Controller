@@ -39,7 +39,6 @@ const int SERVO_PIN_CUTDOWN = 13;
 
 const int temp_ready = 1; // Status of cut-down mechanism (Until we set up the input coming from the actual mechanism)
 const float cut_alt = 60; // 200ft = approx 60m
-float seaLevelhPA;
 float base_altitude;
 
 unsigned long gps_previous = 0;
