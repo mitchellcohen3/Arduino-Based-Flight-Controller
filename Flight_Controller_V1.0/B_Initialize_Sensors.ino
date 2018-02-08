@@ -1,7 +1,7 @@
 void initialize_all_sensors(){
     initialize_imu();
     initialize_servos();
-    initialize_GPS();
+    //initialize_GPS();
     initialize_pres();
     check_cutdown_ready();
   }
@@ -30,7 +30,7 @@ void initialize_servos(){
     /*Write initial angles to servos*/
     
     aileron_servo_left.write(75);
-    aileron_servo_right.write(100);
+    aileron_servo_right.write(110);
     elevator_servo.write(55);
     rudder_servo.write(110);
 
@@ -55,10 +55,8 @@ void initialize_GPS(){
 }
 
 void initialize_pres(){
-    Serial.begin(9600);
-    Serial.println(F("BMP280 test"));
     
-    float seaLevelhPA = get_sealevel_pressure();
+    seaLevelhPA = get_sealevel_pressure();
     Serial.println(F("Baseline sea level pressure = "));
     Serial.println(seaLevelhPA);
     Serial.println(F(" hPA"));    
@@ -81,6 +79,7 @@ void hold_for_gps_fix(){
    nla2 = (gps.location.lat());
    nlo2 = (gps.location.lng());
    num_sats = gps.satellites.value();
+   //Serial.println(num_sats);
   }
 }
 
@@ -155,6 +154,14 @@ int create_file(){
   }
 
   return i;
+}
+
+void initialize_interrupts(){
+    timer_start_pitch = 0; 
+    timer_start_roll = 0;
+    
+    attachInterrupt(CHANNEL_1_PIN, calcSignal_roll, CHANGE);
+    attachInterrupt(CHANNEL_2_PIN, calcSignal_pitch, CHANGE);
 }
 
 int cd_ready = 0; //move this later?

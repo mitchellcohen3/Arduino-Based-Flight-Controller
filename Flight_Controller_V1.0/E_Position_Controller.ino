@@ -82,14 +82,11 @@ int spReached(struct setpt sp, double lon, double lati){
 }  
 
 void position_control(){
-  
-  nlo = (gps.location.lng()); //Using TinyGPS++ library
-  nla = (gps.location.lat()); //Using TinyGPS++ library
-  delay(2000);
+
+    
   double ty = mtolat(setpoints[counter].y);
   double tx = mtolong(setpoints[counter].x, ty);
 
-  Serial.println(tx, 8);
   if (spReached(setpoints[counter], nlo, nla)){
     counter++;
     Serial.println("Setpoint Reached");
@@ -105,12 +102,16 @@ void position_control(){
   
   double head = getHeading(px, py, nx, ny);
   double heading_error = angle(head, nx, ny, setpoints[counter].x, setpoints[counter].y);
+  Serial.print("Heading Error: ");
+  Serial.println(heading_error,9);
     
-  //desired_roll  = outer_loop_PID.calculate_output(heading_error);
-  //these store the previous x/y values
+  desired_roll  = outer_loop_PID.calculate_output(heading_error);
+  Serial.print("Desired Roll: ");
+  Serial.println(desired_roll);
+  Serial.println("");
+  
   px=nx;
   py=ny;
-  delay(5000);
 }
 
 

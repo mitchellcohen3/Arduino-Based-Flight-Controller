@@ -2,12 +2,16 @@ float toRad(float convert){
     return convert*PI/180;
 }
 
+float toDeg(float convert){    
+    return convert*180/PI;
+}
+
 imu::Quaternion euler_to_quat(double pitch, double roll, double yaw){ 
   
-  /*Converts a given Euler rotation to a quaternion*/
-  /*REMEMBER TO CONVERT TO RADIANS*/
+//Converts a given Euler rotation to a quaternion*/
+//REMEMBER TO CONVERT TO RADIANS*/
   
-  /*Abbreviations for the various angular functions*/
+//Abbreviations for the various angular functions
   double cy = cos(yaw * 0.5);
   double sy = sin(yaw * 0.5);
   double cr = cos(roll * 0.5);
@@ -15,20 +19,20 @@ imu::Quaternion euler_to_quat(double pitch, double roll, double yaw){
   double cp = cos(pitch * 0.5);
   double sp = sin(pitch * 0.5);
 
-  /*Calculate the quaternion parameters*/
+//Calculate the quaternion parameters
   double w = cy * cr * cp + sy * sr * sp;
   double x = cy * sr * cp - sy * cr * sp;
   double y = cy * cr * sp + sy * sr * cp;
   double z = sy * cr * cp - cy * sr * sp;
 
-  /*Assign parameters to quaternion object*/
+//Assign parameters to quaternion object
   imu::Quaternion q(w,x,y,z);
   return q;
 }
 
 imu::Quaternion calculate_error_quat(imu::Quaternion q_ref, imu::Quaternion q_current){
   
-   /*Calculates the error quaternion based on two input quaternions*/
+//Calculates the error quaternion based on two input quaternions
    
    imu::Quaternion q_conj = q_current.conjugate();
    imu::Quaternion error_quat = q_ref*(q_conj);

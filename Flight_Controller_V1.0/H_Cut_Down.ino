@@ -7,9 +7,6 @@
   Arduino Library Reference: https://learn.adafruit.com/adafruit-bmp280-barometric-pressure-plus-temperature-sensor-breakout/arduino-test
 
  ***************************************************************************/
-
-float seaLevelhPA = 1013.25; // will be replaced by first pressure reading from pressure sensor
-
 float get_sealevel_pressure(){
   
   seaLevelhPA = bmp.readPressure();

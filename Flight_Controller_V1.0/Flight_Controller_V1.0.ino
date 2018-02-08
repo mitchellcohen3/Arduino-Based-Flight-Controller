@@ -45,11 +45,12 @@ float nlo, nla; //current position in long, lat
 double num_sats;
 double nx, ny;  //current position in cartesian coords
 double px=0, py=0; //previous position, set to zero because that will be our prev position in the first heading calculation
-float desired_roll, desired_pitch = 0;
+float desired_roll = 0, desired_pitch = 0;
 int counter = 0;   //counts the current setpt
 struct setpt setpoints[4];  //define an array of setpoints to reach, once we have reached the last point, initiate landing
 
 String header = "millis, Pressure, Altitude, X, Y, Z, Longatude, Latitude, Elevator Servo, L Aielron Servo, R Aileron Servo, Rudder Servo, Desired Pitch, Desired Roll";
+
 int file_num; 
 String datastring;
 String file_prefix = "data"; // File name prefix for datalogging
@@ -60,17 +61,21 @@ const int chipSelect = BUILTIN_SDCARD;
 #define CHANNEL_1_PIN 3 //Channel 1 Pin From the Rx
 #define CHANNEL_2_PIN 4 //Channel 2 pin from the Rx
 
-volatile unsigned long timer_start; 
-volatile int last_interrupt_time; //calcSignal is the interrupt handler 
-unsigned long pulse_time;
+volatile unsigned long timer_start_pitch; 
+volatile int last_interrupt_time_pitch; 
+unsigned long pulse_time_pitch;
+
+volatile unsigned long timer_start_roll; 
+volatile int last_interrupt_time_roll; 
+unsigned long pulse_time_roll;
 
 void initialize_setpoints(){
-    setpoints[0].x = -400;   //setpts are stored in meters
-    setpoints[0].y = 500;   //placeholder until we come up with an actual coordinate scheme
-    setpoints[1].x = 0;   
+    setpoints[0].x = -150;   //setpts are stored in meters
+    setpoints[0].y = 190;   //placeholder until we come up with an actual coordinate scheme
+    setpoints[1].x = 0;      
     setpoints[1].y = 0;
-    setpoints[2].x = 20;   
-    setpoints[2].y = 20;
+    setpoints[2].x = 0;   
+    setpoints[2].y = 0;
     setpoints[3].x = 0;   
     setpoints[3].y = 0;
 }    
@@ -78,36 +83,26 @@ void initialize_setpoints(){
 void setup() {
     Serial.begin(9600);
     
-    
        while (!Serial) {
     ; // wait for serial port to connect. Needed only for USB connection
   }
   
-  
-  
     initialize_all_sensors();
     
-    Serial.println("Sensors Initialized");
     //this loop checks to make sure there is a fix, new data is received, and that it is parsed, otherwise it tries again
     
-    // hold_for_gps_fix();
+    //hold_for_gps_fix();
     
-    //x_init = (gps.location.lng()); //using TinyGPS++ Library
-    //y_init = (gps.location.lat()); //using TinyGPS++ Library
-    
-    Serial.println(x_init, 6);
-    Serial.println(y_init, 6);
+    x_init = (gps.location.lng()); //using TinyGPS++ Library
+    y_init = (gps.location.lat()); //using TinyGPS++ Library
 
+    //Serial.println(x_init);
+    //Serial.println(y_init);
     
     initialize_setpoints();
-    Serial.println("Setpoints initialized");
-
     file_num = create_file();
-    Serial.println("File Created");
-        
-        
-    timer_start = 0; 
-    attachInterrupt(CHANNEL_1_PIN, calcSignal, CHANGE);
+    initialize_interrupts(); //initialize interrupts to use for reciever and transmitter
+    Serial.println("Ready to go");
     
 }
  
@@ -115,7 +110,15 @@ void loop() {
     read_data();
     write_data();
     //get_altitude(); // Calling cut-down function
-    control();
+
+    /*
+    while (Serial1.available())  gps.encode(Serial1.read());
+    nlo = (gps.location.lng()); //Using TinyGPS++ library
+    nla = (gps.location.lat()); //Using TinyGPS++ library
+    */
+    
+   control();
+    
 }
 
 
