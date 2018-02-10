@@ -144,6 +144,31 @@ int create_file(){
       dataFile.close();
   
       File eventFile = SD.open(event_file_char_array, FILE_WRITE);
+      gains_X = "KP X = ";
+      gains_X += KP_X;
+      gains_X += " KD X = ";
+      gains_X += KD_X;
+      gains_X += " KI X = ";
+      gains_X += KI_X;
+
+      gains_Y = "KP Y = ";
+      gains_Y += KP_Y;
+      gains_Y += " KD Y = ";
+      gains_Y += KD_Y;
+      gains_Y += " KI Y = ";
+      gains_Y += KI_Y;
+
+      gains_Z = "KP Z = ";
+      gains_Z += KP_Z;
+      gains_Z += " KD Z = ";
+      gains_Z += KD_Z;
+      gains_Z += " KI Z = ";
+      gains_Z += KI_Z;
+
+      eventFile.println(gains_X);
+      eventFile.println(gains_Y);
+      eventFile.println(gains_Z);
+      
       eventFile.close(); 
       break;
 

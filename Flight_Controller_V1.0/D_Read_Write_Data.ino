@@ -13,14 +13,15 @@ float current_alt;
 
 //Initialize filter cutoff frequencies 
 
-float filterFrequency_imu = 3;  
-float filterFrequency_tx = 5;
+float filterFrequency_imu = 7;  
+float filterFrequency_tx = 7;
 
 // Create lowpass filter objects for lowpass filtering
 FilterOnePole lowpassFilter_imu_1( LOWPASS, filterFrequency_imu ); 
 FilterOnePole lowpassFilter_imu_2( LOWPASS, filterFrequency_imu );
 FilterOnePole lowpassFilter_imu_3( LOWPASS, filterFrequency_imu );
 FilterOnePole lowpassFilter_imu_4( LOWPASS, filterFrequency_imu ); 
+FilterOnePole lowpassFilter_imu_5( LOWPASS, filterFrequency_imu);
 FilterOnePole lowpassFilter_tx_1( LOWPASS, filterFrequency_tx ); 
 FilterOnePole lowpassFilter_tx_2( LOWPASS, filterFrequency_tx ); 
 
@@ -29,6 +30,7 @@ void read_data(){
 //Read transceiver values for attitude setpoints
 
     desired_pitch = map(pulse_time_pitch, 1000, 2000, -MAX_PITCH_LIMIT, MAX_PITCH_LIMIT);
+    Serial.println(desired_pitch);
     desired_pitch = -toRad(desired_pitch);
     desired_pitch = lowpassFilter_tx_1.input(desired_pitch);
 
@@ -48,6 +50,7 @@ void read_data(){
 //Get actual orientation in Euler angles
     imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
     desired_yaw = toRad(euler.x());
+   // desired_yaw = lowpassFilter_imu_5.input(desired_yaw);
 
 //Read pressure
     pressure = bmp.readPressure();
@@ -56,7 +59,7 @@ void read_data(){
 //This part is needed to detect a discontinuity in the yaw and flip a switch*/
     if(detect_discontinuity(desired_yaw_previous, desired_yaw)){
           if(switch_state == 1){
-              switch_state = -1;              
+              switch_state = -1;             
           }     
           else{
               switch_state = 1;
@@ -95,9 +98,9 @@ void read_data(){
     datastring += ",";
     datastring += rudder_servo.read();
     datastring += ",";
-    datastring += toDeg(desired_pitch);
+    datastring += -toDeg(desired_pitch);
     datastring += ",";
-    datastring += toDeg(desired_roll);
+    datastring += -toDeg(desired_roll);
     datastring += ",";
     
     desired_yaw_previous = desired_yaw;

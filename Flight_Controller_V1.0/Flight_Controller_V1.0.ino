@@ -82,10 +82,12 @@ void initialize_setpoints(){
 
 void setup() {
     Serial.begin(9600);
-    
+
+    /*
        while (!Serial) {
     ; // wait for serial port to connect. Needed only for USB connection
   }
+  */
   
     initialize_all_sensors();
     
