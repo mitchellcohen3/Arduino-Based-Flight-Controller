@@ -42,14 +42,6 @@ float desired_roll, desired_pitch = 0;
 int counter = 0;   //counts the current setpt
 struct setpt setpoints[4];  //define an array of setpoints to reach, once we have reached the last point, initiate landing
 
-String header = "millis, Pressure, Altitude, X, Y, Z, Longatude, Latitude, Elevator Servo, L Aielron Servo, R Aileron Servo, Rudder Servo, Desired Pitch, Desired Roll";
-int file_num; 
-String datastring;
-String file_prefix = "data"; // File name prefix for datalogging
-String event_file_prefix = "log"; // Event log file name
-String file_type = ".txt"; // File type
-const int chipSelect = BUILTIN_SDCARD;
-
 #define CHANNEL_1_PIN 3 //Channel 1 Pin From the Rx
 #define CHANNEL_2_PIN 4 //Channel 2 pin from the Rx
 
@@ -95,9 +87,6 @@ void setup() {
     initialize_setpoints();
     Serial.println("Setpoints initialized");
         
-        
-    timer_start = 0; 
-    attachInterrupt(CHANNEL_1_PIN, calcSignal, CHANGE);
     
 }
  
