@@ -27,13 +27,6 @@ TinyGPSPlus gps;  //Defining GPS for TinyGPS++ Library
 
 Adafruit_BMP280 bmp; // hardware SPI // Defining pressure sensor for cut-down mechanism
 
-/*Create Servo Objects*/
-Servo elevator_servo;
-Servo aileron_servo_left;
-Servo aileron_servo_right;
-Servo rudder_servo;
-Servo cutdown_servo;  
-
 struct setpt{
     //define a set point as a structure with x and y coordinates (in meters)
     double x;
@@ -80,8 +73,8 @@ void setup() {
     
     
        while (!Serial) {
-    ; // wait for serial port to connect. Needed only for USB connection
-  }
+     // wait for serial port to connect. Needed only for USB connection
+    }
   
   
   
@@ -90,10 +83,10 @@ void setup() {
     Serial.println("Sensors Initialized");
     //this loop checks to make sure there is a fix, new data is received, and that it is parsed, otherwise it tries again
     
-    // hold_for_gps_fix();
+    hold_for_gps_fix();
     
-    //x_init = (gps.location.lng()); //using TinyGPS++ Library
-    //y_init = (gps.location.lat()); //using TinyGPS++ Library
+    x_init = (gps.location.lng()); //using TinyGPS++ Library
+    y_init = (gps.location.lat()); //using TinyGPS++ Library
     
     Serial.println(x_init, 6);
     Serial.println(y_init, 6);
@@ -101,9 +94,6 @@ void setup() {
     
     initialize_setpoints();
     Serial.println("Setpoints initialized");
-
-    file_num = create_file();
-    Serial.println("File Created");
         
         
     timer_start = 0; 
@@ -112,9 +102,6 @@ void setup() {
 }
  
 void loop() {
-    read_data();
-    write_data();
-    //get_altitude(); // Calling cut-down function
     control();
 }
 
