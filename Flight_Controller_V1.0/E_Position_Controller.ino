@@ -85,7 +85,6 @@ void position_control(){
   
   nlo = (gps.location.lng()); //Using TinyGPS++ library
   nla = (gps.location.lat()); //Using TinyGPS++ library
-  delay(2000);
   double ty = mtolat(setpoints[counter].y);
   double tx = mtolong(setpoints[counter].x, ty);
 
@@ -105,12 +104,14 @@ void position_control(){
   
   double head = getHeading(px, py, nx, ny);
   double heading_error = angle(head, nx, ny, setpoints[counter].x, setpoints[counter].y);
+  Serial.print("Heading Error: ");
+  Serial.println(heading_error);
     
   //desired_roll  = outer_loop_PID.calculate_output(heading_error);
   //these store the previous x/y values
   px=nx;
   py=ny;
-  delay(5000);
+  delay(1000);
 }
 
 
