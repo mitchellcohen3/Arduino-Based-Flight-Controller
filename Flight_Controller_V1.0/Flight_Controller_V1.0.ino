@@ -86,6 +86,7 @@ void setup() {
     
     initialize_setpoints();
     Serial.println("Setpoints initialized");
+    attachInterrupt(CHANNEL_1_PIN, calcSignal, CHANGE);
         
     
 }
