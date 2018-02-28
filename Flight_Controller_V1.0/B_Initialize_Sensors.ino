@@ -13,9 +13,9 @@ void initialize_GPS(){
     GPS.sendCommand(PGCMD_ANTENNA);      
     
   #ifdef __arm__
-    usingInterrupt = false;  //NOTE - we don't want to use interrupts on the Due
+    useInterrupt(false);  //NOTE - we don't want to use interrupts on the Due
   #else
-    usingInterrupt(true);
+    useInterrupt(true);
   #endif
 } 
 
