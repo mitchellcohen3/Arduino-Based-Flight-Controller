@@ -15,7 +15,7 @@ void initialize_GPS(){
   #ifdef __arm__
     usingInterrupt = false;  //NOTE - we don't want to use interrupts on the Due
   #else
-    useInterrupt(true);
+    usingInterrupt(true);
   #endif
 } 
 
