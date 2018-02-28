@@ -88,6 +88,18 @@ void setup() {
     //this loop checks to make sure there is a fix, new data is received, and that it is parsed, otherwise it tries again
     
     hold_for_gps_fix();
+  
+    // Interrupt is called once a millisecond, looks for any new GPS data, and stores it
+    SIGNAL(TIMER0_COMPA_vect) {
+    char c = GPS.read();
+    #ifdef UDR0
+      if (GPSECHO)
+        if (c) UDR0 = c;  
+        // writing direct to UDR0 is much much faster than Serial.print 
+        // but only one character can be written at a time. 
+    #endif
+}
+
     
     x_init = (gps.location.lng()); //using TinyGPS++ Library
     y_init = (gps.location.lat()); //using TinyGPS++ Library
