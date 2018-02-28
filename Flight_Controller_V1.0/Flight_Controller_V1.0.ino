@@ -20,8 +20,20 @@ Adafruit_BNO055 bno = Adafruit_BNO055();
 Adafruit_GPS GPS(&mySerial);
 #define GPSECHO true
 
-boolean usingInterrupt = false;
-void useInterrupt(boolean); // Func prototype keeps Arduino 0023 happy
+boolean usingInterrupt = true;
+void useInterrupt(boolean v) {
+  if (v) {
+    // Timer0 is already used for millis() - we'll just interrupt somewhere
+    // in the middle and call the "Compare A" function above
+    OCR0A = 0xAF;
+    TIMSK0 |= _BV(OCIE0A);
+    usingInterrupt = true;
+  } else {
+    // do not call the interrupt function COMPA anymore
+    TIMSK0 &= ~_BV(OCIE0A);
+    usingInterrupt = false;
+  }
+}
 
 TinyGPSPlus gps;  //Defining GPS for TinyGPS++ Library
 
