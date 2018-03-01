@@ -20,21 +20,6 @@ Adafruit_BNO055 bno = Adafruit_BNO055();
 Adafruit_GPS GPS(&mySerial);
 #define GPSECHO true
 
-boolean usingInterrupt = true;
-void useInterrupt(boolean v) {
-  if (v) {
-    // Timer0 is already used for millis() - we'll just interrupt somewhere
-    // in the middle and call the "Compare A" function above
-    OCR0A = 0xAF;
-    TIMSK0 |= _BV(OCIE0A);
-    usingInterrupt = true;
-  } else {
-    // do not call the interrupt function COMPA anymore
-    TIMSK0 &= ~_BV(OCIE0A);
-    usingInterrupt = false;
-  }
-}
-
 TinyGPSPlus gps;  //Defining GPS for TinyGPS++ Library
 
 Adafruit_BMP280 bmp; // hardware SPI // Defining pressure sensor for cut-down mechanism
@@ -89,15 +74,6 @@ void setup() {
     
     hold_for_gps_fix();
   
-    // Interrupt is called once a millisecond, looks for any new GPS data, and stores it
-    SIGNAL(TIMER0_COMPA_vect) {
-    char c = GPS.read();
-    #ifdef UDR0
-      if (GPSECHO)
-        if (c) UDR0 = c;  
-        // writing direct to UDR0 is much much faster than Serial.print 
-        // but only one character can be written at a time. 
-    #endif
 }
 
     
