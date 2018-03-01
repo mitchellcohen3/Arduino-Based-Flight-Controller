@@ -83,8 +83,8 @@ int spReached(struct setpt sp, double lon, double lati){
 
 void position_control(){
   
-  //nlo = (gps.location.lng()); //Using TinyGPS++ library
-  //nla = (gps.location.lat()); //Using TinyGPS++ library
+  nlo = (gps.location.lng()); //Using TinyGPS++ library
+  nla = (gps.location.lat()); //Using TinyGPS++ library
   double ty = mtolat(setpoints[counter].y);
   double tx = mtolong(setpoints[counter].x, ty);
 
