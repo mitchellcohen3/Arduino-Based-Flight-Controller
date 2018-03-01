@@ -20,6 +20,9 @@ Adafruit_BNO055 bno = Adafruit_BNO055();
 Adafruit_GPS GPS(&mySerial);
 #define GPSECHO true
 
+boolean usingInterrupt = false;
+void useInterrupt(boolean);
+
 TinyGPSPlus gps;  //Defining GPS for TinyGPS++ Library
 
 Adafruit_BMP280 bmp; // hardware SPI // Defining pressure sensor for cut-down mechanism
